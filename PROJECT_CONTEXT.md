@@ -31,8 +31,9 @@ The site is hosted as a static web site, and deployed by copying the source dire
 
 ## Notes for AI Assistant
 
+I like to work in small steps: make one focused change, add a test for it, make sure all tests pass, and then commit.
+
 If you see mistakes, speak up.  Offer alternatives when there are ways of doing things that might be better.
 
 When committing a change to git, use a short summary of the changes as the first line in the commit message, followed by a verbatim transcript of the chat with the AI assistant since the last commit.
 
----
