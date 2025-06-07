@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glass Block Designer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <h1>Glass Block Designer</h1>
+        <p>Design the layouts of windows made of glass blocks</p>
+    </header>
+
+    <main>
+        <section id="window-setup">
+            <h2>Step 1: Set up Windows</h2>
+            <div id="window-controls">
+                <label for="num-windows">Number of windows:</label>
+                <input type="number" id="num-windows" min="1" max="10" value="1">
+            </div>
+            <div id="window-sizes"></div>
+        </section>
+
+        <section id="block-supply">
+            <h2>Step 2: Set up Block Supply</h2>
+            <div id="color-controls">
+                <label for="num-colors">Number of colors:</label>
+                <input type="number" id="num-colors" min="1" max="20" value="3">
+            </div>
+            <div id="color-setup"></div>
+        </section>
+
+        <section id="design-area">
+            <h2>Step 3: Design Your Windows</h2>
+            <div id="color-palette"></div>
+            <div id="windows-display"></div>
+            <div id="block-counts"></div>
+        </section>
+
+        <section id="save-section">
+            <h2>Step 4: Save Your Work</h2>
+            <div id="design-details">
+                <h3>Design Details</h3>
+                <textarea id="design-output" readonly rows="10" cols="50"
+                    placeholder="Your design details will appear here"></textarea>
+            </div>
+            <button id="copy-design">Copy to Clipboard</button>
+        </section>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="state.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>

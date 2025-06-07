@@ -12,8 +12,7 @@ This application is an interactive web page built with HTML, CSS, jQuery, and Pl
 
 This is a single-page application that can be hosted as part of a static website.  The interactions all happen locally in the browser.
 
-
-[High-level architecture decisions, patterns to follow, and any specific design constraints]
+The source code is organized with the top-level code in `app.js` and each Javascript class in its own file.
 
 ## Development Guidelines
 

@@ -1,0 +1,16 @@
+{
+    "name": "glass-block-designer",
+    "version": "1.0.0",
+    "description": "An application to design the layouts of set of windows made of glass blocks",
+    "main": "index.html",
+    "scripts": {
+        "test": "playwright test",
+        "serve": "python3 -m http.server 8000"
+    },
+    "devDependencies": {
+        "@playwright/test": "^1.40.0"
+    },
+    "dependencies": {
+        "jquery": "^3.7.1"
+    }
+}
