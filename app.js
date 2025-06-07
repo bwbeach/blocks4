@@ -2,6 +2,8 @@
  * Glass Block Designer Application
  */
 
+import { State } from './state.js';
+
 // Global state instance
 let appState = new State();
 

@@ -1,7 +1,7 @@
 /**
  * State class to hold the entire application state
  */
-class State {
+export class State {
     constructor() {
         this.numWindows = 1;
     }
