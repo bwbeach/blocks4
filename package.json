@@ -2,6 +2,7 @@
     "name": "glass-block-designer",
     "version": "1.0.0",
     "description": "An application to design the layouts of set of windows made of glass blocks",
+    "type": "module",
     "main": "index.html",
     "scripts": {
         "test": "playwright test",

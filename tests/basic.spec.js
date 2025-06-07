@@ -1,4 +1,4 @@
-const { test, expect } = require('@playwright/test');
+import { test, expect } from '@playwright/test';
 
 test.describe('Glass Block Designer', () => {
     test('should load the main page with all sections', async ({ page }) => {

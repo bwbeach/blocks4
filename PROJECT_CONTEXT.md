@@ -6,7 +6,7 @@ Note: This file is updated as the project evolves. It serves as a living documen
 
 ## Technical Stack
 
-This application is an interactive web page built with HTML, CSS, jQuery, and Playwright.
+This application is an interactive web page built with HTML, CSS, Javascript, jQuery, and Playwright.  The Javascript is organized using modules.
 
 ## Architecture & Design Decisions
 
