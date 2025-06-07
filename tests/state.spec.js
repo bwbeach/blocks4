@@ -15,13 +15,59 @@ test.describe('State class', () => {
             state.setNumWindows(5);
             expect(state.getNumWindows()).toBe(5);
         });
+
+        test('should accept boundary values 1 and 20', () => {
+            const state = new State();
+
+            state.setNumWindows(1);
+            expect(state.getNumWindows()).toBe(1);
+
+            state.setNumWindows(20);
+            expect(state.getNumWindows()).toBe(20);
+        });
     });
 
-    test.describe('edge cases and boundaries', () => {
-        test('should handle zero (even though it may not be valid business logic)', () => {
+    test.describe('validation constraints', () => {
+        test('should throw error for non-integer values', () => {
             const state = new State();
-            state.setNumWindows(0);
-            expect(state.getNumWindows()).toBe(0);
+
+            expect(() => {
+                state.setNumWindows(3.5);
+            }).toThrow('Number of windows must be an integer');
+
+            expect(() => {
+                state.setNumWindows('5');
+            }).toThrow('Number of windows must be an integer');
+        });
+
+        test('should throw error for value below 1', () => {
+            const state = new State();
+
+            expect(() => {
+                state.setNumWindows(0);
+            }).toThrow('Number of windows must be between 1 and 20');
+        });
+
+        test('should throw error for value above 20', () => {
+            const state = new State();
+
+            expect(() => {
+                state.setNumWindows(21);
+            }).toThrow('Number of windows must be between 1 and 20');
+        });
+
+        test('should not modify state when validation fails', () => {
+            const state = new State();
+            state.setNumWindows(5);
+
+            try {
+                state.setNumWindows(0);
+            } catch (error) {
+                // Expected to throw
+            }
+
+            // State should remain unchanged
+            expect(state.getNumWindows()).toBe(5);
         });
     });
 }); 

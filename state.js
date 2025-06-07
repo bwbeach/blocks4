@@ -7,6 +7,12 @@ export class State {
     }
 
     setNumWindows(count) {
+        if (!Number.isInteger(count)) {
+            throw new Error('Number of windows must be an integer');
+        }
+        if (count < 1 || count > 20) {
+            throw new Error('Number of windows must be between 1 and 20');
+        }
         this.numWindows = count;
     }
 
