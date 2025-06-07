@@ -7,7 +7,7 @@ import { State } from './state.js';
 // Global state instance
 let appState = new State();
 
-$(document).ready(function () {
+$(function () {
     console.log('Glass Block Designer loaded');
 
     // Initialize the application
