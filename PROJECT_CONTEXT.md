@@ -34,5 +34,6 @@ I like to work in small steps: make one focused change, add a test for it, make 
 
 If you see mistakes, speak up.  Offer alternatives when there are ways of doing things that might be better.
 
-When committing a change to git, use a short summary of the changes as the first line in the commit message, followed by a verbatim transcript of the chat with the AI assistant since the last commit.
+When committing a change to git, use a short summary of the changes as the first line in the commit message, followed by a detailed description of the chat with the AI assistant since the last commit.  The detailed description should include both what I said and what the AI assistant said.
 
+If I ask you to do something you can't do, say so.  Don't do something different.
