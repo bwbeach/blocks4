@@ -43,16 +43,18 @@ test.describe('Glass Block Designer', () => {
         const initialJson = await designOutput.inputValue();
 
         expect(JSON.parse(initialJson)).toEqual({
-            numWindows: 1
+            numWindows: 1,
+            windows: [{}]
         });
 
         // Change number of windows and verify JSON updates
-        await page.locator('#num-windows').fill('5');
+        await page.locator('#num-windows').fill('3');
         await page.locator('#num-windows').blur();
 
         const updatedJson = await designOutput.inputValue();
         expect(JSON.parse(updatedJson)).toEqual({
-            numWindows: 5
+            numWindows: 3,
+            windows: [{}, {}, {}]
         });
     });
 }); 

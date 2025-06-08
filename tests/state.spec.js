@@ -1,11 +1,14 @@
 import { test, expect } from '@playwright/test';
 import { State } from '../src/state.js';
+import { Window } from '../src/window.js';
 
 test.describe('State class', () => {
     test.describe('constructor', () => {
         test('should initialize with default values', () => {
             const state = new State();
             expect(state.getNumWindows()).toBe(1);
+            expect(state.getWindows()).toHaveLength(1);
+            expect(state.getWindows()[0]).toBeInstanceOf(Window);
         });
     });
 
@@ -14,6 +17,10 @@ test.describe('State class', () => {
             const state = new State();
             state.setNumWindows(5);
             expect(state.getNumWindows()).toBe(5);
+            expect(state.getWindows()).toHaveLength(5);
+            state.getWindows().forEach(window => {
+                expect(window).toBeInstanceOf(Window);
+            });
         });
 
         test('should accept boundary values 1 and 20', () => {
@@ -74,22 +81,27 @@ test.describe('State class', () => {
     test.describe('toJson', () => {
         test('should return correct JSON representation', () => {
             const state = new State();
-            state.setNumWindows(10);
+            state.setNumWindows(3);
             const json = state.toJson();
 
             expect(json).toEqual({
-                numWindows: 10
+                numWindows: 3,
+                windows: [{}, {}, {}] // Empty objects since Window has no state yet
             });
         });
     });
 
     test.describe('fromJson', () => {
         test('should create new State instance from JSON object', () => {
-            const jsonData = { numWindows: 15 };
+            const jsonData = { numWindows: 3 };
 
             const state = State.fromJson(jsonData);
             expect(state).toBeInstanceOf(State);
-            expect(state.getNumWindows()).toBe(15);
+            expect(state.getNumWindows()).toBe(3);
+            expect(state.getWindows()).toHaveLength(3);
+            state.getWindows().forEach(window => {
+                expect(window).toBeInstanceOf(Window);
+            });
         });
 
         test('should preserve validation rules when loading from JSON', () => {
