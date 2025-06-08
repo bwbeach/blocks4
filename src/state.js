@@ -38,7 +38,7 @@ export class State {
     toJson() {
         return {
             numWindows: this.numWindows,
-            windows: this.windows.map(() => ({})) // Empty objects for now since Window has no state
+            windows: this.windows.map(window => window.toJson())
         };
     }
 
@@ -53,8 +53,10 @@ export class State {
             state.setNumWindows(jsonData.numWindows);
         }
 
-        // Windows array is automatically created by setNumWindows
-        // When Window class gets state, we'll deserialize windows here
+        // If windows data is provided, deserialize each window
+        if (jsonData.windows && Array.isArray(jsonData.windows)) {
+            state.windows = jsonData.windows.map(windowData => Window.fromJson(windowData));
+        }
 
         return state;
     }
