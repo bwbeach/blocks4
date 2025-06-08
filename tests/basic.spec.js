@@ -34,4 +34,25 @@ test.describe('Glass Block Designer', () => {
         await expect(page.locator('#window-sizes')).toContainText('Window setup will be implemented here');
         await expect(page.locator('#color-setup')).toContainText('Color setup will be implemented here');
     });
+
+    test('should display JSON state in design details', async ({ page }) => {
+        await page.goto('/');
+
+        // Check that design output shows initial state as JSON
+        const designOutput = page.locator('#design-output');
+        const initialJson = await designOutput.inputValue();
+
+        expect(JSON.parse(initialJson)).toEqual({
+            numWindows: 1
+        });
+
+        // Change number of windows and verify JSON updates
+        await page.locator('#num-windows').fill('5');
+        await page.locator('#num-windows').blur();
+
+        const updatedJson = await designOutput.inputValue();
+        expect(JSON.parse(updatedJson)).toEqual({
+            numWindows: 5
+        });
+    });
 }); 

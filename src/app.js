@@ -21,6 +21,7 @@ function init() {
     // Initialize with default values
     updateWindowSetup();
     updateColorSetup();
+    updateDesignDetails();
 }
 
 function setupEventListeners() {
@@ -39,6 +40,9 @@ function updateWindowSetup() {
     container.html(`<p>Window setup will be implemented here (${appState.getNumWindows()} windows)</p>`);
 
     console.log('State updated - Number of windows:', appState.getNumWindows());
+
+    // Update design details whenever state changes
+    updateDesignDetails();
 }
 
 function updateColorSetup() {
@@ -47,6 +51,12 @@ function updateColorSetup() {
 
     // TODO: Create color picker and quantity inputs
     container.html('<p>Color setup will be implemented here</p>');
+}
+
+function updateDesignDetails() {
+    const stateJson = appState.toJson();
+    const jsonString = JSON.stringify(stateJson, null, 2);
+    $('#design-output').val(jsonString);
 }
 
 function copyDesignToClipboard() {
