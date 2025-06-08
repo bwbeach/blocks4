@@ -19,4 +19,22 @@ export class State {
     getNumWindows() {
         return this.numWindows;
     }
+
+    toJson() {
+        return {
+            numWindows: this.numWindows
+        };
+    }
+
+    fromJson(jsonData) {
+        if (typeof jsonData === 'string') {
+            jsonData = JSON.parse(jsonData);
+        }
+
+        if (jsonData.numWindows !== undefined) {
+            this.setNumWindows(jsonData.numWindows);
+        }
+
+        return this;
+    }
 } 
