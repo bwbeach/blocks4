@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { State } from '../state.js';
+import { State } from '../src/state.js';
 
 test.describe('State class', () => {
     test.describe('constructor', () => {
