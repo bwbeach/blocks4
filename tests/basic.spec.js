@@ -48,7 +48,11 @@ test.describe('Glass Block Designer', () => {
 
         expect(JSON.parse(initialJson)).toEqual({
             numWindows: 1,
-            windows: [{ width: 6, height: 6 }]
+            windows: [{ width: 6, height: 6 }],
+            blockSupply: {
+                numColors: 3,
+                colors: ['#ff4040', '#354cfe', '#58fc2a']
+            }
         });
 
         // Change number of windows and verify JSON updates
@@ -62,7 +66,11 @@ test.describe('Glass Block Designer', () => {
                 { width: 6, height: 6 },
                 { width: 6, height: 6 },
                 { width: 6, height: 6 }
-            ]
+            ],
+            blockSupply: {
+                numColors: 3,
+                colors: ['#ff4040', '#354cfe', '#58fc2a']
+            }
         });
     });
 
@@ -81,7 +89,11 @@ test.describe('Glass Block Designer', () => {
         const updatedJson = await designOutput.inputValue();
         expect(JSON.parse(updatedJson)).toEqual({
             numWindows: 1,
-            windows: [{ width: 10, height: 8 }]
+            windows: [{ width: 10, height: 8 }],
+            blockSupply: {
+                numColors: 3,
+                colors: ['#ff4040', '#354cfe', '#58fc2a']
+            }
         });
     });
 }); 

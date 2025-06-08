@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { State } from '../src/state.js';
 import { Window } from '../src/window.js';
+import { BlockSupply } from '../src/blockSupply.js';
 
 test.describe('State class', () => {
     test.describe('constructor', () => {
@@ -9,6 +10,7 @@ test.describe('State class', () => {
             expect(state.getNumWindows()).toBe(1);
             expect(state.getWindows()).toHaveLength(1);
             expect(state.getWindows()[0]).toBeInstanceOf(Window);
+            expect(state.getBlockSupply()).toBeInstanceOf(BlockSupply);
         });
     });
 
@@ -86,22 +88,36 @@ test.describe('State class', () => {
 
             expect(json).toEqual({
                 numWindows: 3,
-                windows: [{}, {}, {}] // Empty objects since Window has no state yet
+                windows: [
+                    { width: 6, height: 6 },
+                    { width: 6, height: 6 },
+                    { width: 6, height: 6 }
+                ],
+                blockSupply: {
+                    numColors: 3,
+                    colors: ['#ff4040', '#354cfe', '#58fc2a']
+                }
             });
         });
     });
 
     test.describe('fromJson', () => {
         test('should create new State instance from JSON object', () => {
-            const jsonData = { numWindows: 3 };
+            const jsonData = {
+                numWindows: 2,
+                blockSupply: { numColors: 2, colors: ['#123456', '#abcdef'] }
+            };
 
             const state = State.fromJson(jsonData);
             expect(state).toBeInstanceOf(State);
-            expect(state.getNumWindows()).toBe(3);
-            expect(state.getWindows()).toHaveLength(3);
+            expect(state.getNumWindows()).toBe(2);
+            expect(state.getWindows()).toHaveLength(2);
             state.getWindows().forEach(window => {
                 expect(window).toBeInstanceOf(Window);
             });
+            expect(state.getBlockSupply()).toBeInstanceOf(BlockSupply);
+            expect(state.getBlockSupply().getNumColors()).toBe(2);
+            expect(state.getBlockSupply().getColors()).toEqual(['#123456', '#abcdef']);
         });
 
         test('should preserve validation rules when loading from JSON', () => {
