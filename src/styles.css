@@ -90,10 +90,7 @@ button:hover {
     align-items: center;
 }
 
-.size-inputs label {
-    font-weight: bold;
-    margin-right: 5px;
-}
+
 
 .size-inputs input[type="number"] {
     width: 80px;
