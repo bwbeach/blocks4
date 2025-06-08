@@ -36,8 +36,37 @@ function updateWindowSetup() {
 
     const container = $('#window-sizes');
 
-    // TODO: Create input fields for each window's dimensions
-    container.html(`<p>Window setup will be implemented here (${appState.getNumWindows()} windows)</p>`);
+    // Create input fields for each window's dimensions
+    let html = '';
+    const windows = appState.getWindows();
+
+    for (let i = 0; i < windows.length; i++) {
+        const window = windows[i];
+        html += `
+            <div class="window-config">
+                <h4>Window ${i + 1}</h4>
+                <div class="size-inputs">
+                    <label for="window-${i}-width">Width:</label>
+                    <input type="number" id="window-${i}-width" min="1" max="100" value="${window.getWidth()}">
+                    <label for="window-${i}-height">Height:</label>
+                    <input type="number" id="window-${i}-height" min="1" max="100" value="${window.getHeight()}">
+                </div>
+            </div>
+        `;
+    }
+
+    container.html(html);
+
+    // Add event listeners for the new inputs
+    for (let i = 0; i < windows.length; i++) {
+        $(`#window-${i}-width`).on('change', function () {
+            updateWindowDimension(i, 'width', parseInt($(this).val()));
+        });
+
+        $(`#window-${i}-height`).on('change', function () {
+            updateWindowDimension(i, 'height', parseInt($(this).val()));
+        });
+    }
 
     console.log('State updated - Number of windows:', appState.getNumWindows());
 
@@ -51,6 +80,31 @@ function updateColorSetup() {
 
     // TODO: Create color picker and quantity inputs
     container.html('<p>Color setup will be implemented here</p>');
+}
+
+function updateWindowDimension(windowIndex, dimension, value) {
+    try {
+        const windows = appState.getWindows();
+        const window = windows[windowIndex];
+
+        if (dimension === 'width') {
+            window.setWidth(value);
+        } else if (dimension === 'height') {
+            window.setHeight(value);
+        }
+
+        // Update design details when dimensions change
+        updateDesignDetails();
+
+    } catch (error) {
+        // Reset input to previous valid value on validation error
+        const windows = appState.getWindows();
+        const window = windows[windowIndex];
+        const currentValue = dimension === 'width' ? window.getWidth() : window.getHeight();
+        $(`#window-${windowIndex}-${dimension}`).val(currentValue);
+
+        alert(`Invalid ${dimension}: ${error.message}`);
+    }
 }
 
 function updateDesignDetails() {

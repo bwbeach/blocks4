@@ -27,11 +27,15 @@ test.describe('Glass Block Designer', () => {
         await expect(colorInput).toHaveValue('3');
     });
 
-    test('should show placeholder content for setup sections', async ({ page }) => {
+    test('should show window size controls and placeholder for color setup', async ({ page }) => {
         await page.goto('/');
 
-        // Check that placeholder content is shown
-        await expect(page.locator('#window-sizes')).toContainText('Window setup will be implemented here');
+        // Check that window size controls are shown
+        await expect(page.locator('#window-sizes')).toContainText('Window 1');
+        await expect(page.locator('#window-0-width')).toHaveValue('6');
+        await expect(page.locator('#window-0-height')).toHaveValue('6');
+
+        // Check that color setup placeholder is shown
         await expect(page.locator('#color-setup')).toContainText('Color setup will be implemented here');
     });
 
@@ -44,7 +48,7 @@ test.describe('Glass Block Designer', () => {
 
         expect(JSON.parse(initialJson)).toEqual({
             numWindows: 1,
-            windows: [{}]
+            windows: [{ width: 6, height: 6 }]
         });
 
         // Change number of windows and verify JSON updates
@@ -54,7 +58,30 @@ test.describe('Glass Block Designer', () => {
         const updatedJson = await designOutput.inputValue();
         expect(JSON.parse(updatedJson)).toEqual({
             numWindows: 3,
-            windows: [{}, {}, {}]
+            windows: [
+                { width: 6, height: 6 },
+                { width: 6, height: 6 },
+                { width: 6, height: 6 }
+            ]
+        });
+    });
+
+    test('should update JSON when window dimensions change', async ({ page }) => {
+        await page.goto('/');
+
+        // Change window dimensions
+        await page.locator('#window-0-width').fill('10');
+        await page.locator('#window-0-width').blur();
+
+        await page.locator('#window-0-height').fill('8');
+        await page.locator('#window-0-height').blur();
+
+        // Check that JSON reflects the changes
+        const designOutput = page.locator('#design-output');
+        const updatedJson = await designOutput.inputValue();
+        expect(JSON.parse(updatedJson)).toEqual({
+            numWindows: 1,
+            windows: [{ width: 10, height: 8 }]
         });
     });
 }); 
