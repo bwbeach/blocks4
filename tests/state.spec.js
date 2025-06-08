@@ -98,7 +98,7 @@ test.describe('State class', () => {
             }).toThrow('Number of windows must be between 1 and 20');
         });
 
-        test('should use defailt values for missing fields', () => {
+        test('should use default values for missing fields', () => {
             const state = State.fromJson({});
             expect(state.getNumWindows()).toBe(1); // Should use default value
         });

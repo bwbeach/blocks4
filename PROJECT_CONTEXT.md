@@ -24,6 +24,8 @@ Run the page locally using the command line: (TODO: show the command to launch t
 
 Commits to git are small.  Each one is focused on a single change.
 
+Follow the [Google Javascript style guidelines](https://google.github.io/styleguide/jsguide.html).
+
 ## Deployment & Infrastructure
 
 The site is hosted as a static web site, and deployed by copying the source directory to the server using FTP.
