@@ -26,15 +26,17 @@ export class State {
         };
     }
 
-    fromJson(jsonData) {
+    static fromJson(jsonData) {
         if (typeof jsonData === 'string') {
             jsonData = JSON.parse(jsonData);
         }
 
+        const state = new State();
+
         if (jsonData.numWindows !== undefined) {
-            this.setNumWindows(jsonData.numWindows);
+            state.setNumWindows(jsonData.numWindows);
         }
 
-        return this;
+        return state;
     }
 } 
