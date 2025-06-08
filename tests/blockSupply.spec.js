@@ -1,12 +1,14 @@
 import { test, expect } from '@playwright/test';
 import { BlockSupply } from '../src/blockSupply.js';
 
+const MAX_COLORS = 20;
+
 test.describe('BlockSupply class', () => {
     test.describe('constructor', () => {
         test('should initialize with default values', () => {
             const blockSupply = new BlockSupply();
             expect(blockSupply.getNumColors()).toBe(3);
-            expect(blockSupply.getColors()).toEqual(['#ff0000', '#00ff00', '#0000ff']);
+            expect(blockSupply.getColors()).toEqual(['#ff4040', '#354cfe', '#58fc2a']);
         });
     });
 
@@ -18,16 +20,16 @@ test.describe('BlockSupply class', () => {
             expect(blockSupply.getColors()).toHaveLength(5);
         });
 
-        test('should accept boundary values 1 and 20', () => {
+        test('should accept boundary values 1 and MAX_COLORS', () => {
             const blockSupply = new BlockSupply();
 
             blockSupply.setNumColors(1);
             expect(blockSupply.getNumColors()).toBe(1);
             expect(blockSupply.getColors()).toHaveLength(1);
 
-            blockSupply.setNumColors(20);
-            expect(blockSupply.getNumColors()).toBe(20);
-            expect(blockSupply.getColors()).toHaveLength(20);
+            blockSupply.setNumColors(MAX_COLORS);
+            expect(blockSupply.getNumColors()).toBe(MAX_COLORS);
+            expect(blockSupply.getColors()).toHaveLength(MAX_COLORS);
         });
     });
 
@@ -45,15 +47,15 @@ test.describe('BlockSupply class', () => {
 
             expect(() => {
                 blockSupply.setNumColors(0);
-            }).toThrow('Number of colors must be between 1 and 20');
+            }).toThrow(`Number of colors must be between 1 and ${MAX_COLORS}`);
         });
 
-        test('should throw error for value above 20', () => {
+        test('should throw error for value above MAX_COLORS', () => {
             const blockSupply = new BlockSupply();
 
             expect(() => {
-                blockSupply.setNumColors(21);
-            }).toThrow('Number of colors must be between 1 and 20');
+                blockSupply.setNumColors(MAX_COLORS + 1);
+            }).toThrow(`Number of colors must be between 1 and ${MAX_COLORS}`);
         });
 
         test('should not modify state when validation fails', () => {
@@ -75,7 +77,7 @@ test.describe('BlockSupply class', () => {
         test('should get and set individual colors', () => {
             const blockSupply = new BlockSupply();
 
-            expect(blockSupply.getColor(0)).toBe('#ff0000');
+            expect(blockSupply.getColor(0)).toBe('#ff4040');
 
             blockSupply.setColor(0, '#123456');
             expect(blockSupply.getColor(0)).toBe('#123456');
@@ -134,7 +136,7 @@ test.describe('BlockSupply class', () => {
 
             expect(json).toEqual({
                 numColors: 2,
-                colors: ['#123456', '#00ff00']
+                colors: ['#123456', '#354cfe']
             });
         });
     });
@@ -161,7 +163,7 @@ test.describe('BlockSupply class', () => {
         test('should preserve validation rules when loading from JSON', () => {
             expect(() => {
                 BlockSupply.fromJson({ numColors: 0 });
-            }).toThrow('Number of colors must be between 1 and 20');
+            }).toThrow(`Number of colors must be between 1 and ${MAX_COLORS}`);
 
             expect(() => {
                 BlockSupply.fromJson({ numColors: 2, colors: ['invalid', '#ff0000'] });
@@ -171,7 +173,7 @@ test.describe('BlockSupply class', () => {
         test('should use default values for missing fields', () => {
             const blockSupply = BlockSupply.fromJson({});
             expect(blockSupply.getNumColors()).toBe(3);
-            expect(blockSupply.getColors()).toEqual(['#ff0000', '#00ff00', '#0000ff']);
+            expect(blockSupply.getColors()).toEqual(['#ff4040', '#354cfe', '#58fc2a']);
         });
 
         test('should handle malformed JSON string', () => {
