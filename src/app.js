@@ -76,10 +76,66 @@ function updateWindowSetup() {
 
 function updateColorSetup() {
     const numColors = parseInt($('#num-colors').val());
-    const container = $('#color-setup');
+    try {
+        appState.getBlockSupply().setNumColors(numColors);
+    } catch (error) {
+        // Reset input to previous valid value on validation error
+        const currentValue = appState.getBlockSupply().getNumColors();
+        $('#num-colors').val(currentValue);
+        alert(`Invalid number of colors: ${error.message}`);
+        return;
+    }
 
-    // TODO: Create color picker and quantity inputs
-    container.html('<p>Color setup will be implemented here</p>');
+    const container = $('#color-setup');
+    const blockSupply = appState.getBlockSupply();
+    const colors = blockSupply.getColors();
+    const blockCounts = blockSupply.getBlockCounts();
+
+    // Create color picker and block count input for each color
+    let html = '';
+    for (let i = 0; i < colors.length; i++) {
+        html += `
+            <div class="color-config">
+                <h4>Color ${i + 1}</h4>
+                <div class="color-inputs">
+                    <label for="color-${i}">Color:</label>
+                    <input type="color" id="color-${i}" value="${colors[i]}">
+                    <label for="block-count-${i}">Number of blocks:</label>
+                    <input type="number" id="block-count-${i}" min="0" value="${blockCounts[i]}">
+                </div>
+            </div>
+        `;
+    }
+
+    container.html(html);
+
+    // Add event listeners for the new inputs
+    for (let i = 0; i < colors.length; i++) {
+        $(`#color-${i}`).on('change', function () {
+            try {
+                blockSupply.setColor(i, $(this).val());
+                updateDesignDetails();
+            } catch (error) {
+                // Reset input to previous valid value on validation error
+                $(this).val(blockSupply.getColor(i));
+                alert(`Invalid color: ${error.message}`);
+            }
+        });
+
+        $(`#block-count-${i}`).on('change', function () {
+            try {
+                blockSupply.setBlockCount(i, parseInt($(this).val()));
+                updateDesignDetails();
+            } catch (error) {
+                // Reset input to previous valid value on validation error
+                $(this).val(blockSupply.getBlockCount(i));
+                alert(`Invalid block count: ${error.message}`);
+            }
+        });
+    }
+
+    console.log('State updated - Number of colors:', blockSupply.getNumColors());
+    updateDesignDetails();
 }
 
 function updateWindowDimension(windowIndex, dimension, value) {
