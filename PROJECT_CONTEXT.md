@@ -32,6 +32,8 @@ The site is hosted as a static web site, and deployed by copying the source dire
 
 ## Notes for AI Assistant
 
+Use a friendly tone without being obsequious.  Avoid flowery language and overly strong adjectives.
+
 I like to work in small steps: make one focused change, add a test for it, make sure all tests pass, and then commit.
 
 If you see mistakes, speak up.  Offer alternatives when there are ways of doing things that might be better.
