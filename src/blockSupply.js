@@ -10,6 +10,7 @@ export class BlockSupply {
     constructor() {
         this.numColors = 3;
         this.colors = [0, 1, 2].map(i => this.makeDefaultColor(i));
+        this.blockCounts = [0, 0, 0]; // Initialize with 0 blocks for each color
     }
 
     getNumColors() {
@@ -29,9 +30,11 @@ export class BlockSupply {
         while (this.colors.length < count) {
             const colorIndex = this.colors.length;
             this.colors.push(this.makeDefaultColor(colorIndex));
+            this.blockCounts.push(0); // Initialize new color with 0 blocks
         }
         while (this.colors.length > count) {
             this.colors.pop();
+            this.blockCounts.pop();
         }
     }
 
@@ -93,10 +96,49 @@ export class BlockSupply {
         return /^#[0-9a-fA-F]{6}$/.test(color);
     }
 
+    /**
+     * Get the number of blocks available for a specific color
+     * @param {number} index - The index of the color
+     * @returns {number} The number of blocks available for this color
+     */
+    getBlockCount(index) {
+        if (index < 0 || index >= this.colors.length) {
+            throw new Error(`Color index ${index} is out of range`);
+        }
+        return this.blockCounts[index];
+    }
+
+    /**
+     * Set the number of blocks available for a specific color
+     * @param {number} index - The index of the color
+     * @param {number} count - The number of blocks to set
+     */
+    setBlockCount(index, count) {
+        if (index < 0 || index >= this.colors.length) {
+            throw new Error(`Color index ${index} is out of range`);
+        }
+        if (!Number.isInteger(count)) {
+            throw new Error('Block count must be an integer');
+        }
+        if (count < 0) {
+            throw new Error('Block count cannot be negative');
+        }
+        this.blockCounts[index] = count;
+    }
+
+    /**
+     * Get all block counts
+     * @returns {number[]} Array of block counts for each color
+     */
+    getBlockCounts() {
+        return [...this.blockCounts];
+    }
+
     toJson() {
         return {
             numColors: this.numColors,
-            colors: this.colors
+            colors: this.colors,
+            blockCounts: this.blockCounts
         };
     }
 
@@ -115,6 +157,14 @@ export class BlockSupply {
             for (let i = 0; i < jsonData.colors.length && i < blockSupply.colors.length; i++) {
                 if (jsonData.colors[i] !== undefined) {
                     blockSupply.setColor(i, jsonData.colors[i]);
+                }
+            }
+        }
+
+        if (jsonData.blockCounts && Array.isArray(jsonData.blockCounts)) {
+            for (let i = 0; i < jsonData.blockCounts.length && i < blockSupply.blockCounts.length; i++) {
+                if (jsonData.blockCounts[i] !== undefined) {
+                    blockSupply.setBlockCount(i, jsonData.blockCounts[i]);
                 }
             }
         }

@@ -252,4 +252,139 @@ test.describe('BlockSupply class', () => {
             }).toThrow();
         });
     });
+
+    test.describe('block count management', () => {
+        test('should initialize with zero blocks for each color', () => {
+            const blockSupply = new BlockSupply();
+            const counts = blockSupply.getBlockCounts();
+            expect(counts).toHaveLength(3);
+            counts.forEach(count => {
+                expect(count).toBe(0);
+            });
+        });
+
+        test('should get and set individual block counts', () => {
+            const blockSupply = new BlockSupply();
+
+            blockSupply.setBlockCount(0, 5);
+            expect(blockSupply.getBlockCount(0)).toBe(5);
+
+            blockSupply.setBlockCount(1, 10);
+            expect(blockSupply.getBlockCount(1)).toBe(10);
+        });
+
+        test('should get all block counts', () => {
+            const blockSupply = new BlockSupply();
+
+            blockSupply.setBlockCount(0, 5);
+            blockSupply.setBlockCount(1, 10);
+            blockSupply.setBlockCount(2, 15);
+
+            const counts = blockSupply.getBlockCounts();
+            expect(counts).toEqual([5, 10, 15]);
+            expect(counts).not.toBe(blockSupply.blockCounts); // Should return a copy
+        });
+
+        test('should throw error for invalid block count index', () => {
+            const blockSupply = new BlockSupply();
+
+            expect(() => {
+                blockSupply.getBlockCount(-1);
+            }).toThrow('Color index -1 is out of range');
+
+            expect(() => {
+                blockSupply.getBlockCount(3);
+            }).toThrow('Color index 3 is out of range');
+
+            expect(() => {
+                blockSupply.setBlockCount(-1, 5);
+            }).toThrow('Color index -1 is out of range');
+
+            expect(() => {
+                blockSupply.setBlockCount(3, 5);
+            }).toThrow('Color index 3 is out of range');
+        });
+
+        test('should throw error for invalid block count values', () => {
+            const blockSupply = new BlockSupply();
+
+            expect(() => {
+                blockSupply.setBlockCount(0, -1);
+            }).toThrow('Block count cannot be negative');
+
+            expect(() => {
+                blockSupply.setBlockCount(0, 3.5);
+            }).toThrow('Block count must be an integer');
+        });
+
+        test('should maintain block counts when changing number of colors', () => {
+            const blockSupply = new BlockSupply();
+
+            // Set some initial block counts
+            blockSupply.setBlockCount(0, 5);
+            blockSupply.setBlockCount(1, 10);
+            blockSupply.setBlockCount(2, 15);
+
+            // Increase number of colors
+            blockSupply.setNumColors(4);
+            expect(blockSupply.getBlockCounts()).toEqual([5, 10, 15, 0]);
+
+            // Decrease number of colors
+            blockSupply.setNumColors(2);
+            expect(blockSupply.getBlockCounts()).toEqual([5, 10]);
+        });
+    });
+
+    test.describe('toJson with block counts', () => {
+        test('should include block counts in JSON representation', () => {
+            const blockSupply = new BlockSupply();
+            blockSupply.setBlockCount(0, 5);
+            blockSupply.setBlockCount(1, 10);
+            blockSupply.setBlockCount(2, 15);
+
+            const json = blockSupply.toJson();
+            expect(json.blockCounts).toEqual([5, 10, 15]);
+        });
+    });
+
+    test.describe('fromJson with block counts', () => {
+        test('should load block counts from JSON', () => {
+            const jsonData = {
+                numColors: 2,
+                colors: ['#123456', '#abcdef'],
+                blockCounts: [5, 10]
+            };
+
+            const blockSupply = BlockSupply.fromJson(jsonData);
+            expect(blockSupply.getBlockCounts()).toEqual([5, 10]);
+        });
+
+        test('should handle missing block counts in JSON', () => {
+            const jsonData = {
+                numColors: 2,
+                colors: ['#123456', '#abcdef']
+            };
+
+            const blockSupply = BlockSupply.fromJson(jsonData);
+            expect(blockSupply.getBlockCounts()).toEqual([0, 0]);
+        });
+
+        test('should validate block counts when loading from JSON', () => {
+            expect(() => {
+                BlockSupply.fromJson({
+                    numColors: 2,
+                    colors: ['#123456', '#abcdef'],
+                    blockCounts: [-1, 10]
+                });
+            }).toThrow('Block count cannot be negative');
+
+            expect(() => {
+                BlockSupply.fromJson({
+                    numColors: 2,
+                    colors: ['#123456', '#abcdef'],
+                    blockCounts: [3.5, 10]
+                });
+            }).toThrow('Block count must be an integer');
+        });
+    });
 }); 
