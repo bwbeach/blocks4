@@ -45,7 +45,7 @@ function updateWindowSetup() {
         html += `
             <div class="config-item">
                 <h4>Window ${i + 1}</h4>
-                <div class="size-inputs">
+                <div class="inputs">
                     <label for="window-${i}-width">Width:</label>
                     <input type="number" id="window-${i}-width" min="1" max="100" value="${window.getWidth()}">
                     <label for="window-${i}-height">Height:</label>
@@ -97,7 +97,7 @@ function updateColorSetup() {
         html += `
             <div class="config-item">
                 <h4>Color ${i + 1}</h4>
-                <div class="color-inputs">
+                <div class="inputs">
                     <label for="color-${i}">Color:</label>
                     <input type="color" id="color-${i}" value="${colors[i]}">
                     <label for="block-count-${i}">Number of blocks:</label>
