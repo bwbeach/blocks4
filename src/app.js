@@ -43,7 +43,7 @@ function updateWindowSetup() {
     for (let i = 0; i < windows.length; i++) {
         const window = windows[i];
         html += `
-            <div class="window-config">
+            <div class="config-item">
                 <h4>Window ${i + 1}</h4>
                 <div class="size-inputs">
                     <label for="window-${i}-width">Width:</label>
@@ -95,7 +95,7 @@ function updateColorSetup() {
     let html = '';
     for (let i = 0; i < colors.length; i++) {
         html += `
-            <div class="color-config">
+            <div class="config-item">
                 <h4>Color ${i + 1}</h4>
                 <div class="color-inputs">
                     <label for="color-${i}">Color:</label>
