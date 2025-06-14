@@ -24,3 +24,8 @@ Fourth, save your work:
 
  - Copy the information from Design Details section and paste it into a file on your computer.
 
+## To Do
+
+ - switch color generation to use HSV; it's a more direct representation of what we want
+ - add block supply controls
+ - build the design section
