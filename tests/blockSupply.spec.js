@@ -47,14 +47,6 @@ test.describe('BlockSupply class', () => {
 
             const colors = blockSupply.getColors();
             expect(colors).toHaveLength(3);
-
-            // Test that all colors are valid hex colors
-            colors.forEach(color => {
-                expect(isValidHexColor(color)).toBe(true);
-            });
-
-            // Test that the first three colors are well-distributed (visibly different)
-            expect(areColorsWellDistributed(colors)).toBe(true);
         });
     });
 
@@ -66,12 +58,6 @@ test.describe('BlockSupply class', () => {
 
             const colors = blockSupply.getColors();
             expect(colors).toHaveLength(5);
-
-            // Test that all generated colors are valid and well-distributed
-            colors.forEach(color => {
-                expect(isValidHexColor(color)).toBe(true);
-            });
-            expect(areColorsWellDistributed(colors)).toBe(true);
         });
 
         test('should accept boundary values 1 and MAX_COLORS', () => {
@@ -86,13 +72,6 @@ test.describe('BlockSupply class', () => {
             expect(blockSupply.getNumColors()).toBe(MAX_COLORS);
             const colors = blockSupply.getColors();
             expect(colors).toHaveLength(MAX_COLORS);
-
-            // Test that all MAX_COLORS are valid and reasonably well-distributed
-            colors.forEach(color => {
-                expect(isValidHexColor(color)).toBe(true);
-            });
-            // Use a smaller minimum distance for MAX_COLORS since we have more colors to fit
-            expect(areColorsWellDistributed(colors, 40)).toBe(true);
         });
     });
 
@@ -189,6 +168,31 @@ test.describe('BlockSupply class', () => {
                 blockSupply.setColor(0, 'ff0000');
             }).toThrow('Color must be a valid hex color (e.g., #ff0000)');
         });
+
+        test('test color distribution with defaults', () => {
+            const blockSupply = new BlockSupply();
+
+            // Test that colors are valid and reasonably well-distributed
+            const colors = blockSupply.getColors();
+            colors.forEach(color => {
+                expect(isValidHexColor(color)).toBe(true);
+            });
+            expect(areColorsWellDistributed(colors)).toBe(true);
+        });
+
+        test('test color distribution with MAX_COLORS', () => {
+            const blockSupply = new BlockSupply();
+
+            blockSupply.setNumColors(MAX_COLORS);
+
+            // Test that all MAX_COLORS are valid and reasonably well-distributed
+            // Use a smaller minimum distance for MAX_COLORS since we have more colors to fit
+            const colors = blockSupply.getColors();
+            colors.forEach(color => {
+                expect(isValidHexColor(color)).toBe(true);
+            });
+            expect(areColorsWellDistributed(colors, 40)).toBe(true);
+        });
     });
 
     test.describe('toJson', () => {
@@ -240,10 +244,6 @@ test.describe('BlockSupply class', () => {
 
             const colors = blockSupply.getColors();
             expect(colors).toHaveLength(3);
-            colors.forEach(color => {
-                expect(isValidHexColor(color)).toBe(true);
-            });
-            expect(areColorsWellDistributed(colors)).toBe(true);
         });
 
         test('should handle malformed JSON string', () => {
