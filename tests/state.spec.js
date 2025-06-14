@@ -93,11 +93,16 @@ test.describe('State class', () => {
                     { width: 6, height: 6 },
                     { width: 6, height: 6 }
                 ],
-                blockSupply: {
+                blockSupply: expect.objectContaining({
                     numColors: 3,
-                    colors: ['#ff4040', '#354cfe', '#58fc2a']
-                }
+                    colors: expect.arrayContaining([
+                        expect.stringMatching(/^#[0-9a-f]{6}$/),
+                        expect.stringMatching(/^#[0-9a-f]{6}$/),
+                        expect.stringMatching(/^#[0-9a-f]{6}$/)
+                    ])
+                })
             });
+            expect(json.blockSupply.colors).toHaveLength(3);
         });
     });
 

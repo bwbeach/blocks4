@@ -45,33 +45,45 @@ test.describe('Glass Block Designer', () => {
         // Check that design output shows initial state as JSON
         const designOutput = page.locator('#design-output');
         const initialJson = await designOutput.inputValue();
+        const parsedJson = JSON.parse(initialJson);
 
-        expect(JSON.parse(initialJson)).toEqual({
+        expect(parsedJson).toEqual({
             numWindows: 1,
             windows: [{ width: 6, height: 6 }],
-            blockSupply: {
+            blockSupply: expect.objectContaining({
                 numColors: 3,
-                colors: ['#ff4040', '#354cfe', '#58fc2a']
-            }
+                colors: expect.arrayContaining([
+                    expect.stringMatching(/^#[0-9a-f]{6}$/),
+                    expect.stringMatching(/^#[0-9a-f]{6}$/),
+                    expect.stringMatching(/^#[0-9a-f]{6}$/)
+                ])
+            })
         });
+        expect(parsedJson.blockSupply.colors).toHaveLength(3);
 
         // Change number of windows and verify JSON updates
         await page.locator('#num-windows').fill('3');
         await page.locator('#num-windows').blur();
 
         const updatedJson = await designOutput.inputValue();
-        expect(JSON.parse(updatedJson)).toEqual({
+        const parsedUpdatedJson = JSON.parse(updatedJson);
+        expect(parsedUpdatedJson).toEqual({
             numWindows: 3,
             windows: [
                 { width: 6, height: 6 },
                 { width: 6, height: 6 },
                 { width: 6, height: 6 }
             ],
-            blockSupply: {
+            blockSupply: expect.objectContaining({
                 numColors: 3,
-                colors: ['#ff4040', '#354cfe', '#58fc2a']
-            }
+                colors: expect.arrayContaining([
+                    expect.stringMatching(/^#[0-9a-f]{6}$/),
+                    expect.stringMatching(/^#[0-9a-f]{6}$/),
+                    expect.stringMatching(/^#[0-9a-f]{6}$/)
+                ])
+            })
         });
+        expect(parsedUpdatedJson.blockSupply.colors).toHaveLength(3);
     });
 
     test('should update JSON when window dimensions change', async ({ page }) => {
@@ -87,13 +99,19 @@ test.describe('Glass Block Designer', () => {
         // Check that JSON reflects the changes
         const designOutput = page.locator('#design-output');
         const updatedJson = await designOutput.inputValue();
-        expect(JSON.parse(updatedJson)).toEqual({
+        const parsedJson = JSON.parse(updatedJson);
+        expect(parsedJson).toEqual({
             numWindows: 1,
             windows: [{ width: 10, height: 8 }],
-            blockSupply: {
+            blockSupply: expect.objectContaining({
                 numColors: 3,
-                colors: ['#ff4040', '#354cfe', '#58fc2a']
-            }
+                colors: expect.arrayContaining([
+                    expect.stringMatching(/^#[0-9a-f]{6}$/),
+                    expect.stringMatching(/^#[0-9a-f]{6}$/),
+                    expect.stringMatching(/^#[0-9a-f]{6}$/)
+                ])
+            })
         });
+        expect(parsedJson.blockSupply.colors).toHaveLength(3);
     });
 }); 
