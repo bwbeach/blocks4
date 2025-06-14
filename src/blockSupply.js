@@ -4,13 +4,43 @@
 const MAX_COLORS = 20;
 
 /**
+ * Adjusts an array to a desired size by either adding elements using a default value generator
+ * or removing elements from the end.
+ * @param {Array} array - The array to adjust
+ * @param {number} desiredSize - The target size for the array
+ * @param {function(number): any} defaultValueFn - Function that generates default values for new elements
+ * @returns {Array} The adjusted array
+ */
+function adjustArraySize(array, desiredSize, defaultValueFn) {
+    while (array.length < desiredSize) {
+        const index = array.length;
+        array.push(defaultValueFn(index));
+    }
+    while (array.length > desiredSize) {
+        array.pop();
+    }
+    return array;
+}
+
+/**
  * BlockSupply class to hold state for block supply configuration
  */
 export class BlockSupply {
     constructor() {
         this.numColors = 3;
-        this.colors = [0, 1, 2].map(i => this.makeDefaultColor(i));
-        this.blockCounts = [0, 0, 0]; // Initialize with 0 blocks for each color
+        this.colors = [];
+        this.blockCounts = [];
+        this._adjustArraysToSize(this.numColors);
+    }
+
+    /**
+     * Private method to adjust both colors and blockCounts arrays to a given size
+     * @private
+     * @param {number} size - The target size for both arrays
+     */
+    _adjustArraysToSize(size) {
+        adjustArraySize(this.colors, size, i => this.makeDefaultColor(i));
+        adjustArraySize(this.blockCounts, size, () => 0);
     }
 
     getNumColors() {
@@ -25,17 +55,7 @@ export class BlockSupply {
             throw new Error(`Number of colors must be between 1 and ${MAX_COLORS}`);
         }
         this.numColors = count;
-
-        // Adjust colors array to match numColors
-        while (this.colors.length < count) {
-            const colorIndex = this.colors.length;
-            this.colors.push(this.makeDefaultColor(colorIndex));
-            this.blockCounts.push(0); // Initialize new color with 0 blocks
-        }
-        while (this.colors.length > count) {
-            this.colors.pop();
-            this.blockCounts.pop();
-        }
+        this._adjustArraysToSize(count);
     }
 
     /**
