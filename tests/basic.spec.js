@@ -27,7 +27,7 @@ test.describe('Glass Block Designer', () => {
         await expect(colorInput).toHaveValue('3');
     });
 
-    test('should show window size controls and placeholder for color setup', async ({ page }) => {
+    test('should show window size controls and color setup controls', async ({ page }) => {
         await page.goto('/');
 
         // Check that window size controls are shown
@@ -35,8 +35,10 @@ test.describe('Glass Block Designer', () => {
         await expect(page.locator('#window-0-width')).toHaveValue('6');
         await expect(page.locator('#window-0-height')).toHaveValue('6');
 
-        // Check that color setup placeholder is shown
-        await expect(page.locator('#color-setup')).toContainText('Color setup will be implemented here');
+        // Check that color setup controls are shown
+        await expect(page.locator('#color-setup')).toContainText('Color 1');
+        await expect(page.locator('#color-0')).toBeVisible();
+        await expect(page.locator('#block-count-0')).toBeVisible();
     });
 
     test('should display JSON state in design details', async ({ page }) => {
